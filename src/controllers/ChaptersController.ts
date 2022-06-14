@@ -9,7 +9,7 @@ export class ChaptersController {
 
   async getChapters(ctx: Context) {
     const { id } = getQuery(ctx, { mergeParams: true });
-    const chapter = await this.getYoutubeChaptersService.getChapters(id);
+    const chapter = await this.getYoutubeChaptersService.execute(id);
 
     if (!chapter) {
       ctx.response.status = 404;

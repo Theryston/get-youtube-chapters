@@ -1,17 +1,65 @@
 import { IYoutubeChapter } from "../interfaces/IYoutubeChapter.ts";
 
-const chapters: IYoutubeChapter[] = [
-  {
-    text: "Chapter 1",
-    time: "00:00:00",
-    timeInSeconds: 0,
-    link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-];
+const YOUTUBE_BASE_URL = "https://www.youtube.com/watch";
 
 export class GetYoutubeChaptersService {
-  public getChapters(youtubeId: string): IYoutubeChapter | undefined {
-    return chapters.find((ch) => ch.youtubeId === youtubeId);
+  public async execute(
+    youtubeId: string
+  ): Promise<IYoutubeChapter[] | undefined> {
+    try {
+      const url = `${YOUTUBE_BASE_URL}?v=${youtubeId}`;
+      const description = await this.getDescriptionFromYoutubeUrl(url);
+      const chapters = this.parseChaptersFromText(description);
+      return chapters;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  private async getDescriptionFromYoutubeUrl(url: string): Promise<string> {
+    let content = "";
+    let description = "";
+
+    try {
+      const response = await fetch(url);
+      content = await response.text();
+    } catch (error) {
+      throw new Error(error);
+    }
+
+    const startSearch = '"description":{"simpleText":"';
+    const endSearch = '"}';
+
+    let currentPosition = content.indexOf(startSearch);
+
+    if (currentPosition < 0) throw new Error("Invalid URL");
+
+    description = content.substr(currentPosition + startSearch.length);
+    currentPosition = description.indexOf(endSearch);
+
+    if (currentPosition < 0) throw new Error("Invalid URL");
+    description = description.substr(
+      0,
+      description.length - (description.length - currentPosition)
+    );
+
+    description = description.replace(/\\n/g, "\n");
+
+    return description;
+  }
+
+  private parseChaptersFromText(text: string): IYoutubeChapter[] | undefined {
+    if (!text) throw new Error("Invalid text");
+
+    const startString = "0:00";
+    let currentPosition = 0;
+
+    currentPosition = text.indexOf(startString);
+
+    if (currentPosition < 0) throw new Error("Invalid text");
+
+    const chapters = text.substr(currentPosition).split("\n");
+
+    return chapters.map((chapter) => ({ text: chapter }));
   }
 }
