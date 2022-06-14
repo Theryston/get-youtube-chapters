@@ -35,3 +35,5 @@ cli/tests/.test_coverage/
 /tools/wpt/certs/serial*
 
 .env
+
+warnings-errors.txt
