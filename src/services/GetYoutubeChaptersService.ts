@@ -12,7 +12,7 @@ export class GetYoutubeChaptersService {
       const description = await this.getDescriptionFromYoutubeUrl(url);
       const chapters = this.parseChaptersFromText(description);
       return chapters;
-    } catch (error) {
+    } catch (_error) {
       return undefined;
     }
   }
