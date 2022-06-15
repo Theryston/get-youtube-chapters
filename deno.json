@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "start": "deno task compile && get-youtube-chapters",
+    "dev": "deno run --watch --allow-read --allow-write --allow-net src/app.ts",
+    "test": "deno test --watch --allow-read --allow-write --allow-net",
+    "compile": "deno compile  --allow-read --allow-write --allow-net --output get-youtube-chapters src/app.ts"
+  }
+}
