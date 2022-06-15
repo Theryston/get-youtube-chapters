@@ -15,3 +15,9 @@ to run the tests run the following command:
 ```bash
 deno test --watch --allow-read --allow-write --allow-net
 ```
+
+to compile run the following command:
+
+```bash
+deno compile  --allow-read --allow-write --allow-net --output get-youtube-chapters src/app.ts
+```

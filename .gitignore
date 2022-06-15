@@ -37,3 +37,5 @@ cli/tests/.test_coverage/
 .env
 
 warnings-errors.txt
+
+get-youtube-chapters.exe
