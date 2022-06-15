@@ -1,5 +1,4 @@
 import { IYoutubeChapter } from "../interfaces/IYoutubeChapter.ts";
-import { logger } from "../utils/logger.ts";
 
 const YOUTUBE_BASE_URL = "https://www.youtube.com/watch";
 
@@ -25,7 +24,6 @@ export class GetYoutubeChaptersService {
       const response = await fetch(url);
       content = await response.text();
     } catch (error) {
-      logger.error(error);
       throw new Error(error);
     }
 
